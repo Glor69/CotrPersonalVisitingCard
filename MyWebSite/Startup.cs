@@ -38,6 +38,7 @@ namespace MyWebSite
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            // Check application is a prodaction or decelopment 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -45,13 +46,20 @@ namespace MyWebSite
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                //Adds middleware for using HSTS, which adds the Strict-Transport-Security header.
                 app.UseHsts();
             }
 
+            //Adds middleware for redirecting HTTP Requests to HTTPS.
             app.UseHttpsRedirection();
+            //Enables static file serving for the current request path.
             app.UseStaticFiles();
+            //     Adds the Microsoft.AspNetCore.CookiePolicy.CookiePolicyMiddleware handler to
+            //     the specified Microsoft.AspNetCore.Builder.IApplicationBuilder, which enables
+            //     cookie policy capabilities.
             app.UseCookiePolicy();
 
+            // Inclusion map route and initialization dafault template route 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
